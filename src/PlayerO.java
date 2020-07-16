@@ -1,6 +1,6 @@
-public class PlayerX implements IPlayer {
-    private final String symbol = "X";
-    private boolean move = true;
+public class PlayerO implements IPlayer {
+    private final String symbol = "O";
+    private boolean move = false;
 
     @Override
     public String getSymbol() {

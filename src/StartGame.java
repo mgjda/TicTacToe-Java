@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class StartGame {
@@ -12,8 +11,5 @@ public class StartGame {
         fieldButtons = mainWindow.getFieldButtons();
 
         GameLogic gameLogic = new GameLogic(fieldButtons);
-
-        IPlayer playerX = new PlayerX();
-        IPlayer playerY = new PlayerY();
     }
 }

@@ -14,7 +14,9 @@ public class Field extends JButton {
     }
 
     public void setSymbol(String symbol){
-        this.setText(symbol);
+        if(getText() == " ") {
+            this.setText(symbol);
+        }
     }
 
     public int getiD() {
