@@ -14,6 +14,7 @@ public class Field extends JButton {
     }
 
     public void setSymbol(String symbol){
+        // If symbol is not " " then block event on the field
         if(getText() == " ") {
             this.setText(symbol);
         }
