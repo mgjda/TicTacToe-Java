@@ -10,6 +10,7 @@ public class StartGame {
 
         fieldButtons = mainWindow.getFieldButtons();
 
-        GameLogic gameLogic = new GameLogic(fieldButtons);
+        GameLogic gameLogic = new GameLogic(mainWindow, fieldButtons);
+
     }
 }
