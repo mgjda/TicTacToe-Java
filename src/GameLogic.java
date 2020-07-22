@@ -46,7 +46,7 @@ public class GameLogic implements ActionListener {
             }
         }
         if(isGridFull()){
-            //gameOverDialog();
+            //gameOverDialog(); // uncomment when logic will be finished
         }
     }
 
