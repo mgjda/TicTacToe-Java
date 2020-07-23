@@ -6,12 +6,14 @@ import java.util.Arrays;
 
 public class GameLogic implements ActionListener {
     ArrayList<Field> fieldButtons;
+    private String[][] fieldsBoard;
     GameGUI frame;
     PlayerX playerX;
     PlayerO playerO;
 
     public GameLogic(GameGUI frame, ArrayList<Field> fieldButtons){
         this.fieldButtons = fieldButtons;
+        this.fieldsBoard = new String[3][3];
         this.frame = frame;
         playerX = new PlayerX();
         playerO = new PlayerO();
@@ -29,22 +31,66 @@ public class GameLogic implements ActionListener {
         return true;
     }
 
+    private void setToFieldsBoard(Field button, IPlayer player){
+        switch (button.getiD()){
+            case 1:
+                this.fieldsBoard[0][0] = player.getSymbol();
+                break;
+            case 2:
+                this.fieldsBoard[0][1] = player.getSymbol();
+                break;
+            case 3:
+                this.fieldsBoard[0][2] = player.getSymbol();
+                break;
+            case 4:
+                this.fieldsBoard[1][0] = player.getSymbol();
+                break;
+            case 5:
+                this.fieldsBoard[1][1] = player.getSymbol();
+                break;
+            case 6:
+                this.fieldsBoard[1][2] = player.getSymbol();
+                break;
+            case 7:
+                this.fieldsBoard[2][0] = player.getSymbol();
+                break;
+            case 8:
+                this.fieldsBoard[2][1] = player.getSymbol();
+                break;
+            case 9:
+                this.fieldsBoard[2][2] = player.getSymbol();
+                break;
+            default:
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         Object source = actionEvent.getSource();
         for (Field button: fieldButtons) {
             if(source == button){
-                if(playerX.isMove()==true){
-                    button.setSymbol(playerX.getSymbol());
-                    playerX.switchMove();
-                    playerO.switchMove();
-                }else{
-                    button.setSymbol(playerO.getSymbol());
-                    playerX.switchMove();
-                    playerO.switchMove();
+                if(button.getText() == " "){
+                    if(playerX.isMove()==true){
+                        button.setSymbol(playerX.getSymbol());
+                        setToFieldsBoard(button, playerX);
+                        playerX.switchMove();
+                        playerO.switchMove();
+                    }else{
+                        button.setSymbol(playerO.getSymbol());
+                        setToFieldsBoard(button, playerO);
+                        playerX.switchMove();
+                        playerO.switchMove();
+                    }
                 }
+
             }
         }
+//        for(int i = 0; i<3;i++){
+//            for(int j = 0; j<3;j++){
+//                System.out.print(fieldsBoard[i][j]);
+//            }
+//            System.out.println("");
+//        }
         if(isGridFull()){
             //gameOverDialog(); // uncomment when logic will be finished
         }
