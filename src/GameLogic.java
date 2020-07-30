@@ -31,34 +31,87 @@ public class GameLogic implements ActionListener {
         return true;
     }
 
+    // Check if condition of win is fulfilled.
+    private boolean isWinner(Field button){
+        // Check row
+        for(int i = 0; i< fieldsBoard.length; i++){
+
+            if(fieldsBoard[button.getRow()][i] != button.getText()){
+                break;
+            }
+            if(i == fieldsBoard.length-1){
+                return true;
+            }
+        }
+        // Check column
+        for(int i = 0; i<fieldsBoard.length; i++){
+            if(fieldsBoard[i][button.getColumn()] != button.getText()){
+                break;
+            }
+            if(i == fieldsBoard.length-1){
+                return true;
+            }
+        }
+        // Check diagonal
+        if(button.getRow() == button.getColumn()){
+            for(int i = 0; i < fieldsBoard.length; i++){
+                if(fieldsBoard[i][i] != button.getText())
+                    break;
+                if(i == fieldsBoard.length-1){
+                    return true;
+                }
+            }
+        }
+        // Check anti-diagonal
+        if(button.getRow() + button.getColumn() == fieldsBoard.length - 1){
+            for(int i = 0; i < fieldsBoard.length; i++){
+                if(fieldsBoard[i][(fieldsBoard.length-1)-i] != button.getText())
+                    break;
+                if(i == fieldsBoard.length-1){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private void setToFieldsBoard(Field button, IPlayer player){
         switch (button.getiD()){
             case 1:
                 this.fieldsBoard[0][0] = player.getSymbol();
+                button.setPosition(0, 0);
                 break;
             case 2:
                 this.fieldsBoard[0][1] = player.getSymbol();
+                button.setPosition(0, 1);
                 break;
             case 3:
                 this.fieldsBoard[0][2] = player.getSymbol();
+                button.setPosition(0, 2);
                 break;
             case 4:
                 this.fieldsBoard[1][0] = player.getSymbol();
+                button.setPosition(1, 0);
                 break;
             case 5:
                 this.fieldsBoard[1][1] = player.getSymbol();
+                button.setPosition(1, 1);
                 break;
             case 6:
                 this.fieldsBoard[1][2] = player.getSymbol();
+                button.setPosition(1, 2);
                 break;
             case 7:
                 this.fieldsBoard[2][0] = player.getSymbol();
+                button.setPosition(2, 0);
                 break;
             case 8:
                 this.fieldsBoard[2][1] = player.getSymbol();
+                button.setPosition(2, 1);
                 break;
             case 9:
                 this.fieldsBoard[2][2] = player.getSymbol();
+                button.setPosition(2, 2);
                 break;
             default:
         }
@@ -82,17 +135,24 @@ public class GameLogic implements ActionListener {
                         playerO.switchMove();
                     }
                 }
+                if(isWinner(button)){
+                    System.out.println("Winner is " + button.getText());
+                    gameOverDialog(); // uncomment when logic will be finished
+                }
 
             }
         }
 //        for(int i = 0; i<3;i++){
 //            for(int j = 0; j<3;j++){
+//                if(fieldsBoard[i][j]==null){
+//                    //System.out.print("=");
+//                }
 //                System.out.print(fieldsBoard[i][j]);
 //            }
 //            System.out.println("");
 //        }
         if(isGridFull()){
-            //gameOverDialog(); // uncomment when logic will be finished
+            gameOverDialog(); // uncomment when logic will be finished
         }
     }
 
