@@ -14,6 +14,6 @@ git clone https://github.com/mgjda/TicTacToe-Java.git # Download it on your comp
 ```bash
 cd TicTacToe-Java/src/                 # Go to /src catalog
 mkdir ../TicTacToe                     # Create new catalog for compiled files
-javac -d ../TicTacToe StartGame.java   # Compile source files
-java -cp ../TicTacToe StartGame        # Run the game
+javac -d ../TicTacToe TicTacToe.java   # Compile source files
+java -cp ../TicTacToe TicTacToe        # Run the game
 ```
