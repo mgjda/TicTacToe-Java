@@ -11,19 +11,19 @@ public class GameLogic implements ActionListener {
     PlayerX playerX;
     PlayerO playerO;
 
-    public GameLogic(GameGUI frame, ArrayList<Field> fieldButtons){
+    public GameLogic(GameGUI frame, ArrayList<Field> fieldButtons) {
         this.fieldButtons = fieldButtons;
         this.fieldsBoard = new String[3][3];
         this.frame = frame;
         playerX = new PlayerX();
         playerO = new PlayerO();
-        for (Field button: fieldButtons) {
+        for (Field button : fieldButtons) {
             button.addActionListener(this);
         }
     }
 
     // Check if all fields are filled.
-    private boolean isGridFull(){
+    private boolean isGridFull() {
         for (Field button : fieldButtons) {
             if (button.getText().equals(" "))
                 return false;
@@ -32,42 +32,42 @@ public class GameLogic implements ActionListener {
     }
 
     // Check if condition of win is fulfilled.
-    private boolean isWinner(Field button){
+    private boolean isWinner(Field button) {
         // Check row
-        for(int i = 0; i< fieldsBoard.length; i++){
+        for (int i = 0; i < fieldsBoard.length; i++) {
 
-            if(fieldsBoard[button.getRow()][i] != button.getText()){
+            if (fieldsBoard[button.getRow()][i] != button.getText()) {
                 break;
             }
-            if(i == fieldsBoard.length-1){
+            if (i == fieldsBoard.length - 1) {
                 return true;
             }
         }
         // Check column
-        for(int i = 0; i<fieldsBoard.length; i++){
-            if(fieldsBoard[i][button.getColumn()] != button.getText()){
+        for (int i = 0; i < fieldsBoard.length; i++) {
+            if (fieldsBoard[i][button.getColumn()] != button.getText()) {
                 break;
             }
-            if(i == fieldsBoard.length-1){
+            if (i == fieldsBoard.length - 1) {
                 return true;
             }
         }
         // Check diagonal
-        if(button.getRow() == button.getColumn()){
-            for(int i = 0; i < fieldsBoard.length; i++){
-                if(fieldsBoard[i][i] != button.getText())
+        if (button.getRow() == button.getColumn()) {
+            for (int i = 0; i < fieldsBoard.length; i++) {
+                if (fieldsBoard[i][i] != button.getText())
                     break;
-                if(i == fieldsBoard.length-1){
+                if (i == fieldsBoard.length - 1) {
                     return true;
                 }
             }
         }
         // Check anti-diagonal
-        if(button.getRow() + button.getColumn() == fieldsBoard.length - 1){
-            for(int i = 0; i < fieldsBoard.length; i++){
-                if(fieldsBoard[i][(fieldsBoard.length-1)-i] != button.getText())
+        if (button.getRow() + button.getColumn() == fieldsBoard.length - 1) {
+            for (int i = 0; i < fieldsBoard.length; i++) {
+                if (fieldsBoard[i][(fieldsBoard.length - 1) - i] != button.getText())
                     break;
-                if(i == fieldsBoard.length-1){
+                if (i == fieldsBoard.length - 1) {
                     return true;
                 }
             }
@@ -75,8 +75,8 @@ public class GameLogic implements ActionListener {
         return false;
     }
 
-    private void setToFieldsBoard(Field button, IPlayer player){
-        switch (button.getiD()){
+    private void setToFieldsBoard(Field button, IPlayer player) {
+        switch (button.getiD()) {
             case 1:
                 this.fieldsBoard[0][0] = player.getSymbol();
                 button.setPosition(0, 0);
@@ -120,47 +120,36 @@ public class GameLogic implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         Object source = actionEvent.getSource();
-        for (Field button: fieldButtons) {
-            if(source == button){
-                if(button.getText() == " "){
-                    if(playerX.isMove()==true){
+        for (Field button : fieldButtons) {
+            if (source == button) {
+                if (button.getText() == " ") {
+                    if (playerX.isMove() == true) {
                         button.setSymbol(playerX.getSymbol());
                         setToFieldsBoard(button, playerX);
                         playerX.switchMove();
                         playerO.switchMove();
-                    }else{
+                    } else {
                         button.setSymbol(playerO.getSymbol());
                         setToFieldsBoard(button, playerO);
                         playerX.switchMove();
                         playerO.switchMove();
                     }
                 }
-                if(isWinner(button)){
-                    System.out.println("Winner is " + button.getText());
-                    gameOverDialog(); // uncomment when logic will be finished
+                if (isWinner(button)) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("The winner is player" + button.getText());
+                    String message = sb.toString();
+                    gameOverDialog(message);
+                } else if (isGridFull()) {
+                    gameOverDialog("Draw!"); // uncomment when logic will be finished
                 }
 
             }
         }
-//        for(int i = 0; i<3;i++){
-//            for(int j = 0; j<3;j++){
-//                if(fieldsBoard[i][j]==null){
-//                    //System.out.print("=");
-//                }
-//                System.out.print(fieldsBoard[i][j]);
-//            }
-//            System.out.println("");
-//        }
-        if(isGridFull()){
-            gameOverDialog(); // uncomment when logic will be finished
-        }
     }
 
-    private void gameOverDialog() {
+    private void gameOverDialog(String message) {
         //ImageIcon icon = new ImageIcon("");
-        StringBuilder sb = new StringBuilder();
-        sb.append("The winner is playerX");
-        String message = sb.toString();
         Object[] options = {"Restart",
                 "Exit"};
         int n = JOptionPane.showOptionDialog(frame,
@@ -171,5 +160,21 @@ public class GameLogic implements ActionListener {
                 null,     //do not use a custom Icon
                 options,  //the titles of buttons
                 options[0]); //default button title
+        if (n == 0) {
+            gameRestart();
+        } else {
+            frame.dispose();
+        }
+    }
+
+    private void gameRestart() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                fieldsBoard[i][j] = null;
+            }
+        }
+        for (Field field: fieldButtons) {
+            field.setText(" ");
+        }
     }
 }
